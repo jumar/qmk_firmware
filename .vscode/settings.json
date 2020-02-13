@@ -8,13 +8,11 @@
         "**/*.hex": true
     },
     "files.associations": {
-        "*.h": "c",
-        "*.c": "c",
-        "*.cpp": "cpp",
-        "*.hpp": "cpp",
-        "xstddef": "c"
-    },
-    "terminal.integrated.shell.windows": "C:\\Tools\\msys2\\usr\\bin\\bash.exe",
+      "*.h": "c",
+      "*.c": "c",
+      "*.cpp": "cpp",
+      "*.hpp": "cpp",
+      "xstddef": "c",
         "terminal.integrated.env.windows":
         {
             "MSYSTEM": "MINGW64",
