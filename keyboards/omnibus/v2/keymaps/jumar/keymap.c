@@ -1,0 +1,97 @@
+#include "kb.h"
+
+//Tap Dance Declarations
+enum {
+  TD_TAB_ESC = 0,
+  TD_E_GRAVE
+};
+
+//Tap Dance Definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+  //Tap once for Esc, twice for Caps Lock
+  [TD_TAB_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_TAB, KC_ESC),
+  [TD_E_GRAVE] = ACTION_TAP_DANCE_DOUBLE(KC_E, KC_GRV)
+};
+
+
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+
+	KEYMAP(
+		TD(TD_TAB_ESC), KC_Q, KC_W, TD(TD_E_GRAVE), KC_R, KC_T, KC_ESC, KC_PSCR, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_BSLS,
+		KC_CAPS, LT(2, KC_A), LSFT_T(KC_S), LT(3,KC_D), LCTL_T(KC_F), KC_G, LCTL(KC_C), LCTL(KC_X), KC_H, RCTL_T(KC_J), KC_K, RSFT_T(KC_L), KC_SCLN, KC_QUOT,
+		KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, LCTL(KC_V), KC_INS, KC_N, KC_M, KC_COMM, KC_DOT, KC_UP, KC_MINS,
+		KC_LCTL, HYPR(KC_NO), KC_LGUI, MEH(KC_NO), KC_LALT, KC_SPC, KC_BSPC, KC_DEL, KC_ENT, MO(1), KC_SLSH, KC_LEFT, KC_DOWN, KC_RGHT
+),
+
+	KEYMAP(
+		KC_F1, KC_EXLM, KC_EQL, KC_LPRN, KC_RPRN, KC_PIPE, KC_TRNS, KC_TRNS, KC_UNDS, KC_P7, KC_P8, KC_P9, KC_PPLS, KC_TRNS,
+		KC_F2, KC_PERC, KC_ASTR, KC_LCBR, KC_RCBR, KC_AMPR, KC_TRNS, KC_TRNS, KC_AT, KC_P4, KC_P5, KC_P6, KC_PMNS, KC_NLCK,
+		KC_F3, KC_HASH, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD, KC_RGUI, KC_TRNS, KC_DLR, KC_P1, KC_P2, KC_P3, KC_PAST, KC_PEQL,
+		KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_TRNS, KC_P0, KC_PDOT, KC_PSLS, KC_PENT
+),
+
+	KEYMAP(
+		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, TG(4), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+),
+
+	KEYMAP(
+		RESET, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, RESET, KC_TRNS, KC_PGUP, KC_HOME, KC_UP, KC_END, KC_TRNS, KC_TRNS,
+		KC_TRNS, KC_TRNS, KC_LSFT, KC_TRNS, KC_LCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS,
+		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+),
+
+	KEYMAP(
+		KC_GRV, KC_1, KC_2, KC_3, KC_4, KC_5, KC_TRNS, TO(0), KC_6, KC_7, KC_8, KC_9, KC_0, KC_BSPC,
+		KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_TRNS, KC_TRNS, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_BSLS,
+		KC_LSFT, KC_A, SFT_T(KC_R), KC_D, CTL_T(KC_F), KC_G, KC_TRNS, KC_TRNS, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
+		KC_LCTL, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_SPC, KC_SPC, KC_N, KC_M, KC_LABK, KC_RABK, KC_SLSH, KC_TRNS
+)
+};
+
+void matrix_init_user(void) {
+}
+
+void matrix_scan_user(void) {
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+	return true;
+}
+
+void led_set_user(uint8_t usb_led) {
+
+	if (usb_led & (1 << USB_LED_NUM_LOCK)) {
+
+	} else {
+
+	}
+
+	if (usb_led & (1 << USB_LED_CAPS_LOCK)) {
+
+	} else {
+
+	}
+
+	if (usb_led & (1 << USB_LED_SCROLL_LOCK)) {
+
+	} else {
+
+	}
+
+	if (usb_led & (1 << USB_LED_COMPOSE)) {
+
+	} else {
+
+	}
+
+	if (usb_led & (1 << USB_LED_KANA)) {
+
+	} else {
+
+	}
+
+}
