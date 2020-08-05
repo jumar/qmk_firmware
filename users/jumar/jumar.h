@@ -45,7 +45,7 @@ enum {
 #define RSFT_L   RSFT_T(KC_L)
 #define LT3_ENT  LT(3,KC_ENT)
 #define LT1_DEL  LT(1,KC_DEL)
-#define LT4_APP  LT(4,KC_APP)
+#define LT4_GRV  LT(4,KC_GRV)
 
 //Tap Dance Definitions
 qk_tap_dance_action_t tap_dance_actions[] = {

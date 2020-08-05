@@ -22,13 +22,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         TD(TAB_ESC), KC_Q      , KC_W      , KC_E      , KC_R       , KC_T   ,                  TD(Y_REDO), KC_U        , KC_I   , KC_O  , KC_P   , KC_BSPC,
         TD(SFT_CPS), LT2_A     , LSFT_S    , LT3_D     , LCTL_F     , KC_G   ,                  KC_H      , RCTL_J      , LT5_K  , RSFT_L, KC_SCLN, KC_QUOT,
         KC_LCTL    , TD(Z_UNDO), TD(X_CUTT), TD(C_COPY), TD(V_PASTE), KC_B   ,                  KC_N      , KC_M        , KC_COMM, KC_DOT, KC_SLSH, KC_BSLS,
-                                                         KC_LGUI    , KC_LALT, KC_SPC, LT3_ENT, LT1_DEL   , KC_GRV
+                                                         KC_LGUI    , KC_LALT, KC_SPC, LT3_ENT, LT1_DEL   , LT4_GRV
     ),
 	[_1_SYMBOLS_NUMPAD] = LAYOUT(
         KC_ESC , KC_EXLM, KC_EQL , KC_LPRN, KC_RPRN, KC_PIPE,                   KC_UNDS, KC_P7  , KC_P8  , KC_P9  , KC_PPLS, _______,
         _______, KC_PERC, KC_ASTR, KC_LCBR, KC_RCBR, KC_AMPR,                   KC_AT  , KC_P4  , KC_P5  , KC_P6  , KC_PMNS, KC_NLCK,
         _______, KC_HASH, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD,                   KC_DLR,  KC_P1  , KC_P2  , KC_P3  , KC_PAST, KC_PENT,
-                                            LT4_APP, _______, _______, _______, _______, KC_P0
+                                            KC_APP , _______, _______, _______, _______, KC_P0
     ),
 	[_2_MOUSE_MEDIA] = LAYOUT(
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_WH_U, XXXXXXX, KC_MS_U, XXXXXXX, KC_WH_U, _______,
