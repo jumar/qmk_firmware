@@ -28,24 +28,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB     , KC_Q       , KC_W   , KC_E         , KC_R       , KC_T   , KC_CUT  , TG(4), XXXXXXX, TD(Y_REDO), KC_U   , KC_I   , KC_O   , KC_P,    KC_BSPC,
         TD(SFT_CPS), LT2_A      , LSFT_S , LT3_D        , LCTL_F     , KC_G   , KC_COPY , TG(3), XXXXXXX, KC_H      , RCTL_J , LT5_K  , RSFT_L , KC_SCLN, KC_QUOT,
         KC_LCTL    , TD(Z_UNDO) , TD(X_CUTT), TD(C_COPY), TD(V_PASTE), KC_B   , KC_PASTE, TG(2), KC_INS , KC_N      , KC_M   , KC_COMM, KC_DOT , KC_SLSH, KC_BSLS,
-        KC_LCTL    , HYPR(KC_NO), MEH(KC_NO), KC_LGUI   , KC_LALT    , KC_SPC , KC_BSPC , TG(1), KC_DEL , LT3_ENT   , LT1_DEL, LT4_APP, XXXXXXX, XXXXXXX, XXXXXXX
+        KC_LCTL    , HYPR(KC_NO), MEH(KC_NO), KC_LGUI   , KC_LALT    , KC_SPC , KC_BSPC , TG(1), KC_DEL , LT3_ENT   , LT1_DEL, KC_GRV , XXXXXXX, XXXXXXX, XXXXXXX
     ),
 	[_1_SYMBOLS_NUMPAD] = LAYOUT_ortho_5x15(
         KC_F12 , KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  , _______, XXXXXXX, _______, KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 , KC_F11 ,
         KC_ESC , KC_EXLM, KC_EQL , KC_LPRN, KC_RPRN, KC_PIPE, _______, XXXXXXX, _______, KC_UNDS, KC_P7  , KC_P8  , KC_P9  , KC_PPLS, _______,
         _______, KC_PERC, KC_ASTR, KC_LCBR, KC_RCBR, KC_AMPR, _______, XXXXXXX, _______, KC_AT  , KC_P4  , KC_P5  , KC_P6  , KC_PMNS, KC_NLCK,
         _______, KC_HASH, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD, _______, XXXXXXX, _______, KC_DLR , KC_P1  , KC_P2  , KC_P3  , KC_PAST, KC_PENT,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_P0  , KC_PDOT, KC_PSLS, KC_PEQL
+        _______, _______, _______, KC_APP , _______, _______, _______, _______, _______, _______, _______, KC_P0  , KC_PDOT, KC_PSLS, KC_PEQL
     ),
 	[_2_MOUSE_MEDIA] = LAYOUT_ortho_5x15(
-        RESET  , DEBUG  , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        RESET  , DEBUG  , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_WH_U, XXXXXXX, KC_MS_U, XXXXXXX, KC_WH_U, XXXXXXX,
         XXXXXXX, _______, _______, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_WH_D, KC_MS_L, KC_MS_D, KC_MS_R, KC_WH_D, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_BTN3, KC_BTN2, XXXXXXX, XXXXXXX, XXXXXXX, KC_BTN1, KC_MPLY, KC_MFFD, XXXXXXX, XXXXXXX, XXXXXXX
     ),
 	[_3_NAV] = LAYOUT_ortho_5x15(
-        RESET  , DEBUG  , _______, _______, _______, _______, _______, XXXXXXX, _______, _______, _______, _______, _______, _______, _______,
+        RESET  , DEBUG  , _______, _______, _______, _______, _______, XXXXXXX, _______, _______, _______, _______, _______, _______, KC_PSCR,
         _______, _______, _______, _______, _______, _______, _______, XXXXXXX, _______, KC_PGUP, KC_HOME,   KC_UP,  KC_END, KC_PGUP, _______,
         _______, _______, KC_LSFT, _______, KC_LSFT, _______, _______, _______, _______, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, _______,
         _______, _______, _______, _______, _______, _______, _______, XXXXXXX, _______, _______, _______, _______, _______, _______, _______,
