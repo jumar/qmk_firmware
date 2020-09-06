@@ -46,6 +46,7 @@ enum {
 #define LT3_ENT  LT(3,KC_ENT)
 #define LT1_DEL  LT(1,KC_DEL)
 #define LT4_GRV  LT(4,KC_GRV)
+#define CTL_ENT  LCTL_T(KC_ENT)
 
 //Tap Dance Definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
