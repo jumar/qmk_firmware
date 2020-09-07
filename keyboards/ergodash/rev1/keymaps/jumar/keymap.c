@@ -24,12 +24,12 @@ enum layer_names {
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-	[_0_QWERTY] = LAYOUT(
-        KC_ESC     , KC_MYCM    , XXXXXXX, KC_GRV       , XXXXXXX    , XXXXXXX, KC_CUT  , KC_PSCR, XXXXXXX   , KC_LEFT, KC_UP  , KC_DOWN, KC_RGHT, KC_BSPC,
-        KC_TAB     , KC_Q       , KC_W   , KC_E         , KC_R       , KC_T   , KC_COPY , XXXXXXX, TD(Y_REDO), KC_U   , KC_I   , KC_O   , KC_P,    KC_BSPC,
-        TD(SFT_CPS), LT2_A      , LSFT_S , LT3_D        , LCTL_F     , KC_G   , KC_PASTE, XXXXXXX, KC_H      , RCTL_J , LT5_K  , RSFT_L , KC_SCLN, KC_QUOT,
-        KC_LCTL    , TD(Z_UNDO) , TD(X_CUTT), TD(C_COPY), TD(V_PASTE), KC_B   , KC_APP  , KC_INS , KC_N      , KC_M   , KC_COMM, KC_DOT , KC_SLSH, KC_BSLS,
-        CTL_ENT    , HYPR(KC_NO), KC_LGUI   , XXXXXXX   , KC_LALT    , KC_SPC , KC_BSPC , KC_DEL , LT3_ENT   , LT1_DEL, LT4_GRV , XXXXXXX, XXXXXXX, XXXXXXX
+    [_0_QWERTY] = LAYOUT_wrapper( \
+        KC_ESC , KC_MYCM, XXXXXXX, KC_GRV , XXXXXXX , XXXXXXX, KC_CUT  , KC_PSCR, XXXXXXX, KC_LEFT, KC_UP  , KC_DOWN, KC_RGHT, KC_BSPC,
+        ROW4_LEFT_BASE                                       , KC_COPY , XXXXXXX,                                       ROW4_RGHT_BASE,
+        ROW3_LEFT_BASE                                       , KC_PASTE, XXXXXXX,                                       ROW3_RGHT_BASE,
+        ROW2_LEFT_BASE                                       , KC_APP  , KC_INS ,                                       ROW2_RGHT_BASE,
+        CTL_ENT, HYPR(KC_NO), KC_LGUI,XXXXXXX,KC_LALT,KC_SPC , KC_BSPC , KC_ENT , LT3_ENT, LT1_DEL, LT4_GRV, XXXXXXX, XXXXXXX, XXXXXXX
     ),
 	[_1_SYMBOLS_NUMPAD] = LAYOUT(
         KC_F12 , KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  , _______, _______, KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 , KC_F11 ,
@@ -57,7 +57,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   , _______, KC_PGUP, KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , KC_BSLS,
         KC_CAPS, KC_A   , LSFT_S , KC_D   , LCTL_F , KC_G   , _______, KC_PGDN, KC_H   , KC_J   , KC_K   , KC_L   , KC_SCLN, KC_QUOT,
         KC_LSFT, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   , _______, _______, KC_N   , KC_M   , KC_COMM, KC_DOT , KC_UP  , KC_ESC ,
-        KC_LCTL, _______, KC_LGUI, _______, KC_LALT, KC_SPC , KC_BSPC, KC_DEL , KC_ENT , _______, KC_SLSH, KC_LEFT, KC_DOWN, KC_RGHT
+        KC_LCTL, _______, KC_LGUI, _______, KC_LALT, KC_SPC , KC_BSPC, KC_DEL , KC_ENT , KC_SLSH, _______, KC_LEFT, KC_DOWN, KC_RGHT
     ),
 	[_5_GRAVE_RGB] = LAYOUT(
         RESET  , DEBUG  , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,

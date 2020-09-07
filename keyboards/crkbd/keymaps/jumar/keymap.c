@@ -18,11 +18,11 @@ enum layer_names {
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-	[_0_QWERTY] = LAYOUT(
-        TD(TAB_ESC), KC_Q      , KC_W      , KC_E      , KC_R       , KC_T   ,                  TD(Y_REDO), KC_U        , KC_I   , KC_O  , KC_P   , KC_BSPC,
-        TD(SFT_CPS), LT2_A     , LSFT_S    , LT3_D     , LCTL_F     , KC_G   ,                  KC_H      , RCTL_J      , LT5_K  , RSFT_L, KC_SCLN, KC_QUOT,
-        KC_LCTL    , TD(Z_UNDO), TD(X_CUTT), TD(C_COPY), TD(V_PASTE), KC_B   ,                  KC_N      , KC_M        , KC_COMM, KC_DOT, KC_SLSH, KC_BSLS,
-                                                         KC_LGUI    , KC_LALT, KC_SPC, LT3_ENT, LT1_DEL   , LT4_GRV
+	[_0_QWERTY] = LAYOUT_wrapper( \
+        ROW4_LEFT_BASE      ,                  ROW4_RGHT_BASE   ,
+        ROW3_LEFT_BASE      ,                  ROW3_RGHT_BASE   ,
+        ROW2_LEFT_BASE      ,                  ROW2_RGHT_BASE   ,
+            KC_LGUI, KC_LALT, KC_SPC, LT3_ENT, LT1_DEL , LT4_GRV
     ),
 	[_1_SYMBOLS_NUMPAD] = LAYOUT(
         KC_ESC , KC_EXLM, KC_EQL , KC_LPRN, KC_RPRN, KC_PIPE,                   KC_UNDS, KC_P7  , KC_P8  , KC_P9  , KC_PPLS, _______,

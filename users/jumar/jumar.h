@@ -59,3 +59,53 @@ qk_tap_dance_action_t tap_dance_actions[] = {
   [Z_UNDO]  = ACTION_TAP_DANCE_DOUBLE(KC_Z, KC_UNDO),
   [Y_REDO]  = ACTION_TAP_DANCE_DOUBLE(KC_Y, KC_REDO),
 };
+
+#define LAYOUT_wrapper(...) LAYOUT(__VA_ARGS__)
+
+#define SIX_TRNS  _______, _______, _______, _______, _______, _______
+#define FOUR_TRNS _______, _______, _______, _______
+
+#define ROW5_LEFT_BASE
+#define ROW4_LEFT_BASE TD(TAB_ESC), KC_Q      , KC_W      , KC_E      , KC_R       , KC_T
+#define ROW3_LEFT_BASE TD(SFT_CPS), LT2_A     , LSFT_S    , LT3_D     , LCTL_F     , KC_G
+#define ROW2_LEFT_BASE CTL_ENT    , TD(Z_UNDO), TD(X_CUTT), TD(C_COPY), TD(V_PASTE), KC_B
+#define ROW1_LEFT_BASE
+
+#define ROW5_RGHT_BASE
+#define ROW4_RGHT_BASE TD(Y_REDO), KC_U        , KC_I   , KC_O  , KC_P   , KC_BSPC
+#define ROW3_RGHT_BASE KC_H      , RCTL_J      , LT5_K  , RSFT_L, KC_SCLN, KC_QUOT
+#define ROW2_RGHT_BASE KC_N      , KC_M        , KC_COMM, KC_DOT, KC_SLSH, KC_BSLS
+#define ROW1_RGHT_BASE
+
+#define ROW5_LEFT_SYMB _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5
+#define ROW5_RGHT_SYMB KC_F6,   KC_F7,  KC_F8,   KC_F9,   KC_F10,  KC_F11
+#define ROW5_LEFT_VIM  SIX_TRNS
+#define ROW5_RGHT_VIM  SIX_TRNS
+
+// Row 4: 6 keys
+
+#define ROW4_LEFT_SYMB _______, KC_EXLM, KC_AT, KC_LPRN, KC_RPRN, KC_PIPE
+#define ROW4_RGHT_SYMB KC_UP,   KC_7,    KC_8,  KC_9,    KC_ASTR, KC_F12
+#define ROW4_LEFT_VIM  SIX_TRNS
+#define ROW4_RGHT_VIM  SIX_TRNS
+
+// Row 3: 6 keys
+
+#define ROW3_LEFT_SYMB _______,       KC_HASH, KC_DLR, KC_LCBR,  KC_RCBR, KC_GRV
+#define ROW3_RGHT_SYMB KC_DOWN,       KC_4,    KC_5,   KC_6,     KC_PLUS, _______
+#define ROW3_LEFT_VIM  _______,       DLEFT,   DRIGHT, KC_LCTL,  KC_LGUI, _______
+#define ROW3_RGHT_VIM  KC_LEFT,       KC_DOWN, KC_UP,  KC_RIGHT, _______, _______
+
+
+
+#define ROW2_LEFT_SYMB _______,       KC_PERC,     KC_CIRC, KC_LBRC,  KC_RBRC,        KC_TILD
+#define ROW2_RGHT_SYMB KC_AMPR,       KC_1,        KC_2,    KC_3,     KC_BSLS,        _______
+#define ROW2_LEFT_VIM  _______,       _______,     KC_TAB,  _______,  _______,        _______
+#define ROW2_RGHT_VIM  SIX_TRNS
+
+
+
+#define ROW1_LEFT_SYMB _______,       _______, _______,  _______
+#define ROW1_RGHT_SYMB KC_0,          KC_DOT,  KC_EQL,   _______
+#define ROW1_LEFT_VIM  FOUR_TRNS
+#define ROW1_RGHT_VIM  FOUR_TRNS
