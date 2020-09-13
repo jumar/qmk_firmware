@@ -9,17 +9,18 @@
         "**/*.bin": true
     },
     "files.associations": {
-      "*.h": "c",
-      "*.c": "c",
-      "*.cpp": "cpp",
-      "*.hpp": "cpp",
-      "xstddef": "c",
-        "terminal.integrated.env.windows":
-        {
-            "MSYSTEM": "MINGW64",
-            //"MSYS2_PATH_TYPE": "inherit",
-            "MSVSCODE": "1"
-        },
+        "*.h": "c",
+        "*.c": "c",
+        "*.inc": "c",
+        "*.cpp": "cpp",
+        "*.hpp": "cpp",
+        "xstddef": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "ranges": "c"
+    },
+    "[markdown]": {
+        "editor.trimAutoWhitespace": false,
+        "files.trimTrailingWhitespace": false
     }
-
 }
