@@ -22,7 +22,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         ROW4_LEFT_BASE      ,                  ROW4_RGHT_BASE   ,
         ROW3_LEFT_BASE      ,                  ROW3_RGHT_BASE   ,
         ROW2_LEFT_BASE      ,                  ROW2_RGHT_BASE   ,
-            KC_LGUI, KC_LALT, KC_SPC, LT3_ENT, LT1_DEL , LT4_GRV
+            KC_LGUI, ALT_BSP, KC_SPC, LT3_ENT, LT1_DEL , LT4_GRV
     ),
 	[_1_SYMBOLS_NUMPAD] = LAYOUT(
         KC_ESC , KC_EXLM, KC_EQL , KC_LPRN, KC_RPRN, KC_PIPE,                   KC_UNDS, KC_P7  , KC_P8  , KC_P9  , KC_PPLS, _______,
@@ -44,8 +44,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 	[_4_FN] = LAYOUT(
         KC_F12 , KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  ,                   KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 , KC_F11 ,
-        KC_LSFT, XXXXXXX, _______, XXXXXXX, _______, XXXXXXX,                   XXXXXXX, _______, XXXXXXX, _______, XXXXXXX, XXXXXXX,
-        KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        KC_LSFT, XXXXXXX, _______, XXXXXXX, _______, XXXXXXX,                   XXXXXXX, _______, XXXXXXX, _______, KC_UP  , XXXXXXX,
+        KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT,
                                             _______, _______, _______, _______, _______, _______
     ),
     [_5_GRAVE_RGB] = LAYOUT(
@@ -104,14 +104,17 @@ void matrix_scan_user(void) {
 void matrix_render_user(struct CharacterMatrix *matrix) {
   if (is_master) {
     // If you want to change the display of OLED, you need to change here
-    matrix_write_ln(matrix, read_layer_state());
-    matrix_write_ln(matrix, read_keylog());
+    //matrix_write_ln(matrix, read_layer_state());
+    //matrix_write_ln(matrix, read_keylog());
     //matrix_write_ln(matrix, read_keylogs());
     //matrix_write_ln(matrix, read_mode_icon(keymap_config.swap_lalt_lgui));
     //matrix_write_ln(matrix, read_host_led_state());
     //matrix_write_ln(matrix, read_timelog());
   } else {
     matrix_write(matrix, read_logo());
+    //matrix_write_ln(matrix, read_host_led_state());
+    //matrix_write_ln(matrix, read_layer_state());
+    //matrix_write_ln(matrix, read_keylog());
   }
 }
 
