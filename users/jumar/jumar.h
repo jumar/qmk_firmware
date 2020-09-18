@@ -44,6 +44,8 @@ enum {
 #define RCTL_J   RCTL_T(KC_J)
 #define LT5_K    LT(5,KC_K)
 #define RSFT_L   RSFT_T(KC_L)
+#define LSFT_KP  LSFT_T(KC_CAPS)
+#define LT3_SPC  LT(3,KC_SPC)
 #define LT3_ENT  LT(3,KC_ENT)
 #define LT1_DEL  LT(1,KC_DEL)
 #define LT4_GRV  LT(4,KC_GRV)
@@ -51,7 +53,7 @@ enum {
 
 //Tap Dance Definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
-  //Tap once for Esc, twice for Caps Lock
+  //Tap once for Tab, twice for Escape
   [TAB_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_TAB, KC_ESC),
   [SFT_CPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
   [X_CUTT]  = ACTION_TAP_DANCE_DOUBLE(KC_X, KC_CUT),
@@ -68,7 +70,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
 #define ROW5_LEFT_BASE
 #define ROW4_LEFT_BASE TD(TAB_ESC), KC_Q      , KC_W      , KC_E      , KC_R       , KC_T
-#define ROW3_LEFT_BASE TD(SFT_CPS), LT2_A     , LSFT_S    , LT3_D     , LCTL_F     , KC_G
+#define ROW3_LEFT_BASE LSFT_KP    , LT2_A     , LSFT_S    , LT3_D     , LCTL_F     , KC_G
 #define ROW2_LEFT_BASE CTL_ENT    , TD(Z_UNDO), TD(X_CUTT), TD(C_COPY), TD(V_PASTE), KC_B
 #define ROW1_LEFT_BASE
 
