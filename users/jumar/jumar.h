@@ -38,9 +38,11 @@ enum {
 // Home row and modifiers
 #define LT2_A    LT(2,KC_A)
 #define LSFT_S   LSFT_T(KC_S)
+#define LSFT_W   LSFT_T(KC_W)
 #define ALT_BSP  LALT_T(KC_BSPC)
 #define LT3_D    LT(3,KC_D)
 #define LCTL_F   LCTL_T(KC_F)
+#define LCTL_R   LCTL_T(KC_R)
 #define RCTL_J   RCTL_T(KC_J)
 #define LT5_K    LT(5,KC_K)
 #define RSFT_L   RSFT_T(KC_L)

@@ -9,12 +9,13 @@ extern rgblight_config_t rgblight_config;
 extern uint8_t is_master;
 
 enum layer_names {
-  _0_QWERTY,
+  _0_QWERTY = 0,
   _1_SYMBOLS_NUMPAD,
   _2_MOUSE_MEDIA,
   _3_NAV,
   _4_FN,
   _5_GRAVE_RGB,
+  _6_GAMING,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -28,7 +29,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC , KC_EXLM, KC_EQL , KC_LPRN, KC_RPRN, KC_PIPE,                   KC_UNDS, KC_P7  , KC_P8  , KC_P9  , KC_PPLS, _______,
         _______, KC_PERC, KC_ASTR, KC_LCBR, KC_RCBR, KC_AMPR,                   KC_AT  , KC_P4  , KC_P5  , KC_P6  , KC_PMNS, KC_NLCK,
         _______, KC_HASH, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD,                   KC_DLR,  KC_P1  , KC_P2  , KC_P3  , KC_PAST, KC_PENT,
-                                            KC_APP , _______, _______, _______, _______, KC_P0
+                                            KC_APP , TG(_6_GAMING), _______, _______, _______, KC_P0
     ),
 	[_2_MOUSE_MEDIA] = LAYOUT(
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_WH_U, XXXXXXX, KC_MS_U, XXXXXXX, KC_WH_U, _______,
@@ -48,12 +49,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,
                                             _______, _______, _______, _______, _______, _______
     ),
-    [_5_GRAVE_RGB] = LAYOUT(
+  [_5_GRAVE_RGB] = LAYOUT(
         RESET  , XXXXXXX, XXXXXXX, KC_GRV , XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
         XXXXXXX, XXXXXXX, RGB_SAI, RGB_HUI, RGB_VAI, RGB_SPI,                   XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, RGB_SAD, RGB_HUD, RGB_VAD, RGB_SPD,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                                             XXXXXXX, XXXXXXX, XXXXXXX, RGB_TOG, XXXXXXX, XXXXXXX
-    )
+    ),
+  [_6_GAMING] = LAYOUT(
+        KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,                   KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , XXXXXXX,
+        KC_TAB , KC_Q   , LSFT_W , KC_E   , LCTL_R , KC_T   ,                   KC_H   , KC_J   , KC_K   , KC_L   , KC_UP  , XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_N   , KC_M   , KC_COMM, KC_LEFT, KC_DOWN, KC_RGHT,
+                                            XXXXXXX, KC_LALT, KC_SPC , KC_ENT , KC_DEL , TG(_6_GAMING)
+    ),
 };
 
 int RGB_current_mode;
@@ -92,10 +99,10 @@ void set_keylog(uint16_t keycode, keyrecord_t *record);
 const char *read_keylog(void);
 const char *read_keylogs(void);
 
-// const char *read_mode_icon(bool swap);
-// const char *read_host_led_state(void);
-// void set_timelog(void);
-// const char *read_timelog(void);
+ const char *read_mode_icon(bool swap);
+ const char *read_host_led_state(void);
+ void set_timelog(void);
+ const char *read_timelog(void);
 
 void matrix_scan_user(void) {
    iota_gfx_task();
@@ -104,17 +111,17 @@ void matrix_scan_user(void) {
 void matrix_render_user(struct CharacterMatrix *matrix) {
   if (is_master) {
     // If you want to change the display of OLED, you need to change here
-    //matrix_write_ln(matrix, read_layer_state());
+    matrix_write_ln(matrix, read_layer_state());
     //matrix_write_ln(matrix, read_keylog());
     //matrix_write_ln(matrix, read_keylogs());
     //matrix_write_ln(matrix, read_mode_icon(keymap_config.swap_lalt_lgui));
+    //read_logo();
     //matrix_write_ln(matrix, read_host_led_state());
     //matrix_write_ln(matrix, read_timelog());
   } else {
-    //matrix_write(matrix,
-     read_logo();
+    matrix_write(matrix, read_logo());
     //matrix_write_ln(matrix, read_host_led_state());
-    matrix_write_ln(matrix, read_layer_state());
+    //matrix_write_ln(matrix, read_layer_state());
     //matrix_write_ln(matrix, read_keylog());
   }
 }
