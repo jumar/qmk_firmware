@@ -14,7 +14,7 @@ enum layer_names {
   _2_MOUSE_MEDIA,
   _3_NAV,
   _4_FN,
-  _5_GRAVE_RGB,
+  _5_RGB,
   _6_GAMING,
 };
 
@@ -49,7 +49,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,
                                             _______, _______, _______, _______, _______, _______
     ),
-  [_5_GRAVE_RGB] = LAYOUT(
+  [_5_RGB] = LAYOUT(
         RESET  , XXXXXXX, XXXXXXX, KC_GRV , XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
         XXXXXXX, XXXXXXX, RGB_SAI, RGB_HUI, RGB_VAI, RGB_SPI,                   XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, RGB_SAD, RGB_HUD, RGB_VAD, RGB_SPD,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -85,7 +85,7 @@ void matrix_init_user(void) {
     #endif
     //SSD1306 OLED init, make sure to add #define SSD1306OLED in config.h
     #ifdef SSD1306OLED
-        iota_gfx_init(!has_usb());   // turns on the display
+      iota_gfx_init(!has_usb());   // turns on the display
     #endif
 }
 
@@ -93,36 +93,125 @@ void matrix_init_user(void) {
 #ifdef SSD1306OLED
 
 // When add source files to SRC in rules.mk, you can use functions.
-const char *read_layer_state(void);
+const char *read_layer_state(void); // commented as we have our own implementation
 const char *read_logo(void);
 void set_keylog(uint16_t keycode, keyrecord_t *record);
 const char *read_keylog(void);
 const char *read_keylogs(void);
 
- const char *read_mode_icon(bool swap);
- const char *read_host_led_state(void);
- void set_timelog(void);
- const char *read_timelog(void);
+const char *read_mode_icon(bool swap);
+const char *read_host_led_state(void);
+void set_timelog(void);
+const char *read_timelog(void);
+
+char matrix_line_str[24];
 
 void matrix_scan_user(void) {
    iota_gfx_task();
 }
 
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if (record->event.pressed) {
+#ifdef SSD1306OLED
+    set_keylog(keycode, record);
+#endif
+    set_timelog();
+  }
+  return true;
+}
+
+const char *read_layer_state(void) {
+  uint8_t layer = biton32(layer_state);
+  
+  strcpy(matrix_line_str, "Layer: ");
+  
+  switch (layer)
+  {
+    case _0_QWERTY:
+      strcat(matrix_line_str, "QWERTY");
+      break;
+    case _1_SYMBOLS_NUMPAD:
+      strcat(matrix_line_str, "Symbols/Num");
+      break;
+    case _2_MOUSE_MEDIA:
+      strcat(matrix_line_str, "Mouse/Media");
+      break;
+    case _3_NAV:
+      strcat(matrix_line_str, "Navigation");
+      break;
+    case _4_FN:
+      strcat(matrix_line_str, "FN/Nav");
+      break;
+    case _5_RGB:
+      strcat(matrix_line_str, "RGB");
+      break;
+    case _6_GAMING:
+      strcat(matrix_line_str, "Gaming");
+      break;
+    default:
+      sprintf(matrix_line_str + strlen(matrix_line_str), "Unknown (%d)", layer);
+  }
+
+  return matrix_line_str;
+}
+const char *read_usb_state(void) {
+  
+  strcpy(matrix_line_str, "USB  : ");
+  
+  switch (USB_DeviceState) {
+    case DEVICE_STATE_Unattached:
+      strcat(matrix_line_str, "Unattached");
+      break;
+    case DEVICE_STATE_Suspended:
+      strcat(matrix_line_str, "Suspended");
+      break;
+    case DEVICE_STATE_Configured:
+      strcat(matrix_line_str, "Connected");
+      break;
+    case DEVICE_STATE_Powered:
+      strcat(matrix_line_str, "Powered");
+      break;
+    case DEVICE_STATE_Default:
+      strcat(matrix_line_str, "Default");
+      break;
+    case DEVICE_STATE_Addressed:
+      strcat(matrix_line_str, "Addressed");
+      break;
+    default:
+      strcat(matrix_line_str, "Invalid");
+  }
+
+  return matrix_line_str;
+}
+
+const char *read_wpm(void) {
+  strcpy(matrix_line_str, "WPM: ");
+  char buff[4];
+  uint8_t wpm = get_current_wpm();
+  if(wpm < 1000) {
+    itoa(wpm, buff, 10);
+  }
+  else {
+    strcpy(buff, "err");
+  }
+  strcat(matrix_line_str, buff);
+  return matrix_line_str;
+}
+
 void matrix_render_user(struct CharacterMatrix *matrix) {
   if (is_master) {
     // If you want to change the display of OLED, you need to change here
-    matrix_write_ln(matrix, read_layer_state());
-    //matrix_write_ln(matrix, read_keylog());
-    //matrix_write_ln(matrix, read_keylogs());
-    //matrix_write_ln(matrix, read_mode_icon(keymap_config.swap_lalt_lgui));
-    //read_logo();
-    //matrix_write_ln(matrix, read_host_led_state());
-    //matrix_write_ln(matrix, read_timelog());
-  } else {
     matrix_write(matrix, read_logo());
-    //matrix_write_ln(matrix, read_host_led_state());
     //matrix_write_ln(matrix, read_layer_state());
-    //matrix_write_ln(matrix, read_keylog());
+    //matrix_write_ln(matrix, read_usb_state());
+    //matrix_write_ln(matrix, read_keylog()); // Matrix debugging
+    //matrix_write_ln(matrix, read_keylogs()); // Prints typed chars (does not work with dual function keys
+    //matrix_write_ln(matrix, read_mode_icon(keymap_config.swap_lalt_lgui));
+    //matrix_write_ln(matrix, read_timelog()); // prints last timestamp and elaspsed time
+  } else {
+    matrix_write_ln(matrix, read_host_led_state());
+    matrix_write_ln(matrix, read_layer_state());
+    matrix_write_ln(matrix, read_wpm());
   }
 }
 
@@ -139,5 +228,6 @@ void iota_gfx_task_user(void) {
   matrix_render_user(&matrix);
   matrix_update(&display, &matrix);
 }
+
 #endif//SSD1306OLED
 
