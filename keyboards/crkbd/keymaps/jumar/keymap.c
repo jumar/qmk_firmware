@@ -58,7 +58,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_6_GAMING] = LAYOUT(
         KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,                   KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , XXXXXXX,
         KC_TAB , KC_Q   , LSFT_W , KC_E   , LCTL_R , KC_T   ,                   KC_H   , KC_J   , KC_K   , KC_L   , KC_UP  , XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_N   , KC_M   , KC_COMM, KC_LEFT, KC_DOWN, KC_RGHT,
+        XXXXXXX, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   ,                   KC_N   , KC_M   , KC_COMM, KC_LEFT, KC_DOWN, KC_RGHT,
                                             XXXXXXX, KC_LALT, KC_SPC , KC_ENT , KC_DEL , TG(_6_GAMING)
     ),
 };
@@ -122,9 +122,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 const char *read_layer_state(void) {
   uint8_t layer = biton32(layer_state);
-  
+
   strcpy(matrix_line_str, "Layer: ");
-  
+
   switch (layer)
   {
     case _0_QWERTY:
@@ -155,9 +155,9 @@ const char *read_layer_state(void) {
   return matrix_line_str;
 }
 const char *read_usb_state(void) {
-  
+
   strcpy(matrix_line_str, "USB  : ");
-  
+
   switch (USB_DeviceState) {
     case DEVICE_STATE_Unattached:
       strcat(matrix_line_str, "Unattached");
