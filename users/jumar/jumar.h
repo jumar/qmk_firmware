@@ -51,6 +51,7 @@ enum {
 #define LT5_K    LT(5,KC_K)
 #define RSFT_L   RSFT_T(KC_L)
 #define LSFT_KP  LSFT_T(KC_CAPS)
+#define LCTL_SP  LCTL_T(KC_SPC)
 #define LT3_SPC  LT(3,KC_SPC)
 #define LT3_ENT  LT(3,KC_ENT)
 #define LT1_DEL  LT(1,KC_DEL)
@@ -103,7 +104,7 @@ enum layer_names {
 #define ROW4_LEFT_BASE TD(TAB_ESC), KC_Q      , KC_W      , KC_E      , KC_R       , KC_T
 #define ROW3_LEFT_BASE LSFT_KP    , LT2_A     , LSFT_S    , LT3_D     , LCTL_F     , KC_G
 #define ROW2_LEFT_BASE CTL_ENT    , KC_Z      , KC_X      , KC_C      , KC_V       , KC_B
-#define ROW1_LEFT_BASE                                      KC_LGUI   , KC_LALT    , LT3_SPC
+#define ROW1_LEFT_BASE                                      KC_LGUI   , KC_LALT    , LCTL_SP
 
 #define ROW5_RIGHT_BASE KC_6      , KC_7      , KC_8   , KC_9   , KC_0   , KC_BSPC
 #define ROW4_RIGHT_BASE KC_Y      , KC_U      , KC_I   , KC_O   , KC_P   , KC_BSPC
@@ -141,7 +142,7 @@ enum layer_names {
 #define ROW5_LEFT_NAV_CPY_PASTA SIX_TRNS
 #define ROW4_LEFT_NAV_CPY_PASTA KC_PSCR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
 #define ROW3_LEFT_NAV_CPY_PASTA XXXXXXX, XXXXXXX, _______, _______, _______, XXXXXXX
-#define ROW2_LEFT_NAV_CPY_PASTA XXXXXXX, KC_UNDO, KC_CUT , KC_COPY,KC_PASTE, KC_REDO
+#define ROW2_LEFT_NAV_CPY_PASTA XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
 #define ROW1_LEFT_NAV_CPY_PASTA                            _______, _______, _______
 
 #define ROW5_RIGHT_NAV_CPY_PASTA SIX_TRNS
