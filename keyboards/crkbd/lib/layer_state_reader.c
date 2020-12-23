@@ -10,6 +10,7 @@
 #define _3_NAV 8
 #define _4_FN 16
 #define _5_GRAVE_RGB 32
+#define _6_GAMING 64
 
 char layer_state_str[24];
 
@@ -33,6 +34,9 @@ const char *read_layer_state(void) {
     break;
   case _5_GRAVE_RGB:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: RGB");
+    break;
+  case _6_GAMING:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Gaming");
     break;
   default:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Undef-%ld", layer_state);
