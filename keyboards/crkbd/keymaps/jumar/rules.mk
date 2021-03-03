@@ -9,3 +9,4 @@ SRC +=  ./lib/glcdfont.c \
         ./lib/timelogger.c \
 
 WPM_ENABLE = yes
+VIRTSER_ENABLE = yes

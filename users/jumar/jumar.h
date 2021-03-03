@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "quantum.h"
 
 // General config.h type defines
-#define TAPPING_TERM 175
+#define TAPPING_TERM 150
 #define MASTER_LEFT
 
 //Tap Dance Declarations
