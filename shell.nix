@@ -2,29 +2,22 @@
 
 let
   nixpkgs = builtins.fetchTarball {
-    url = "https://github.com/NixOS/nixpkgs/archive/903266491b7b9b0379e88709feca0af900def0d9.tar.gz";
-    sha256 = "1b5wjrfgyha6s15k1yjyx41hvrpmd5szpkpkxk6l5hyrfqsr8wip";
+    url = "https://github.com/NixOS/nixpkgs/archive/1f77a4c8c74bbe896053994836790aa9bf6dc5ba.tar.gz";
+    sha256 = "1j62nmzz3w33dplzf1xz1pg1pfkxii7lwdqmsxmc71cs9cm3s7n1";
   };
 
   pkgs = import nixpkgs { };
-
-  hjson = with pkgs.python3Packages; buildPythonPackage rec {
-    pname = "hjson";
-    version = "3.0.1";
-
-    src = fetchPypi {
-      inherit pname version;
-      sha256 = "1yaimcgz8w0ps1wk28wk9g9zdidp79d14xqqj9rjkvxalvx2f5qx";
-    };
-    doCheck = false;
-  };
 
   pythonEnv = pkgs.python3.withPackages (p: with p; [
     # requirements.txt
     appdirs
     argcomplete
     colorama
+    dotty-dict
     hjson
+    jsonschema
+    milc
+    pygments
     # requirements-dev.txt
     nose2
     flake8
@@ -50,7 +43,7 @@ in
 mkShell {
   name = "qmk-firmware";
 
-  buildInputs = [ dfu-programmer dfu-util diffutils git pythonEnv ]
+  buildInputs = [ clang-tools dfu-programmer dfu-util diffutils git pythonEnv ]
     ++ lib.optional avr [
       pkgsCross.avr.buildPackages.binutils
       pkgsCross.avr.buildPackages.gcc8
@@ -65,6 +58,6 @@ mkShell {
   shellHook = ''
     # Prevent the avr-gcc wrapper from picking up host GCC flags
     # like -iframework, which is problematic on Darwin
-    unset NIX_TARGET_CFLAGS_COMPILE
+    unset NIX_CFLAGS_COMPILE_FOR_TARGET
   '';
 }
