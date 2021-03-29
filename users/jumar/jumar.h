@@ -20,7 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "quantum.h"
 
 // General config.h type defines
-#define TAPPING_TERM 150
+#undef TAPPING_TERM
+#define TAPPING_TERM 120
 #define MASTER_LEFT
 
 //Tap Dance Declarations
@@ -69,7 +70,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
   [Z_UNDO]  = ACTION_TAP_DANCE_DOUBLE(KC_Z, KC_UNDO),
   [Y_REDO]  = ACTION_TAP_DANCE_DOUBLE(KC_Y, KC_REDO),
 };
-
+#ifdef RGBLIGHT_ENABLE
 typedef union {
   uint32_t raw;
   struct {
@@ -78,6 +79,7 @@ typedef union {
 } user_config_t;
 
 user_config_t user_config;
+#endif
 
 enum custom_keycodes {
   RGB_LYR = SAFE_RANGE, // can always be here
@@ -190,6 +192,8 @@ enum layer_names {
 #define ROW2_RIGHT_FN XXXXXXX, XXXXXXX, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT
 #define ROW1_RIGHT_FN _______, _______, _______
 
+#ifdef RGBLIGHT_ENABLE
+// RGB LAYER INDICATOR
 void keyboard_post_init_user(void) {
   // Call the keymap level matrix init.
 
@@ -234,8 +238,6 @@ uint32_t layer_state_set_user(uint32_t state) {
     }
   return state;
 }
-
-// RGB LAYER INDICATOR
 
 bool process_record_user_RGB(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -285,3 +287,4 @@ void matrix_init_user_RGB_LYR(void) {
     rgblight_mode_noeeprom(1);
   }
 }
+#endif

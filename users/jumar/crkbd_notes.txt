@@ -1,0 +1,92 @@
+default keymap with 
+RGBLIGHT_ENABLE = no      # Enable WS2812 RGB underlight.
+RGB_MATRIX_ENABLE = yes
+OLED_DRIVER_ENABLE = yes
+ça marche un momment puis ça bug (mais avec un seul coté ça marche)
+
+default keymap with
+RGBLIGHT_ENABLE = no      # Enable WS2812 RGB underlight.
+RGB_MATRIX_ENABLE = yes
+OLED_DRIVER_ENABLE = no
+matrix ok. tout a l'air bon au début mais bug au bout d'un momment.
+
+defaut keymap with
+RGBLIGHT_ENABLE = no      # Enable WS2812 RGB underlight.
+RGB_MATRIX_ENABLE = no
+OLED_DRIVER_ENABLE = no
+pas de probleme tout a l'air ok. on va voir dans 5 minutes. toujour bon
+
+oled_sample keymap with
+RGBLIGHT_ENABLE = yes       # Enable WS2812 RGB underlight.
+OLED_DRIVER_ENABLE = yes
+oled master ok, oled slave affiche de la crap. rgb underglow ok. marche encore apres 5 minutes
+
+oled_sample keymap with
+RGBLIGHT_ENABLE = no       # Enable WS2812 RGB underlight.
+RGB_MATRIX_ENABLE = yes
+OLED_DRIVER_ENABLE = yes
+compilation errors
+
+common/via 
+both oled work. standard rgb backlight
+
+common/via with
+RGB_MATRIX_ENABLE = yes
+same compilation errors as oled_sample. To fix them: add #ifdef in config.h
+OLED + matrix ok.
+branché a droite, a planté apres quelques minutes
+branché a gauche, so far so good. Planté au bout d'un momment
+
+common/via without RGB matrix but std RGB to see if it is sable. very stable.
+
+oled_sample keymap with compile error fix (#define matrix in config.h)
+RGBLIGHT_ENABLE = no       # Enable WS2812 RGB underlight.
+RGB_MATRIX_ENABLE = yes
+OLED_DRIVER_ENABLE = yes
+matrix and oled ok at startup. let's wait and see. bug.
+
+
+common/jumarc (via base with oled_sample keymap)
+MOUSEKEY_ENABLE     = no     # Mouse keys
+RGBLIGHT_ENABLE     = yes    # Enable WS2812 RGB underlight.
+VIA_ENABLE          = no     # Enable VIA
+OLED_DRIVER_ENABLE  = yes
+LTO_ENABLE          = no
+
+common/jumarc (via base with oled_sample keymap)
+MOUSEKEY_ENABLE     = no     # Mouse keys
+RGBLIGHT_ENABLE     = no    # Enable WS2812 RGB underlight.
+RGB_MATRIX_ENABLE   = yes
+VIA_ENABLE          = no     # Enable VIA
+OLED_DRIVER_ENABLE  = yes
+LTO_ENABLE          = no
+all good, let's see if it bugs. marche plus après le repas. Sort de veille (LED) puis bug
+
+meme chose avec  #define USE_MATRIX_I2C en plus. let's see. 
+Bug after some time.
+
+meme chose avec RGB_MATRIX_DRIVER   = WS2812
+all good at startup, let's see. toujours ok apres5 minutes. Bug un peu aprèsmmfds
+
+De retour à common/via and std RGB
+oled ok. on attend. ok apres 5 minutes. toujours ok
+
+common/via
+OLED_DRIVER_ENABLE  = yes
+RGB_MATRIX_ENABLE   = yes
+RGB_MATRIX_DRIVER   = WS2812
+ok au début. plusieurs on off. toujours ok. Bug au bout d'un moment 
+putain, on dirait que c'étais juste a cause du trrs mal branché!!!!!!!
+
+common/jumarc avec trrs bien branché
+OLED_DRIVER_ENABLE  = yes
+RGB_MATRIX_ENABLE   = yes
+RGB_MATRIX_DRIVER   = WS2812
+
+
+
+-------------------------
+You may want to consider turning on link time optimization LINK_TIME_OPTIMIZATION_ENABLE = yes to reduce firmware size.
+-------------------------
+
+Idée: Ajoutter kc_ins qq part et tracker son status sur le OLED
