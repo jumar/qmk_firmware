@@ -6,4 +6,5 @@ VIA_ENABLE          = no     # Enable VIA
 OLED_DRIVER_ENABLE  = yes
 LTO_ENABLE          = no
 #BOOTLOADER			= qmk-dfu
+
 USER_NAME := jumar

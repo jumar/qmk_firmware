@@ -90,3 +90,4 @@ You may want to consider turning on link time optimization LINK_TIME_OPTIMIZATIO
 -------------------------
 
 Idée: Ajoutter kc_ins qq part et tracker son status sur le OLED
+Pay37e38esIngo63311111111112132sssddddfffffxcvvcsdee

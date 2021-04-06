@@ -1,12 +1,10 @@
+MOUSEKEY_ENABLE     = no     # Mouse keys
+RGBLIGHT_ENABLE     = no    # Enable WS2812 RGB underlight.
+RGB_MATRIX_ENABLE   = yes
+RGB_MATRIX_DRIVER   = WS2812
+VIA_ENABLE          = no     # Enable VIA
+OLED_DRIVER_ENABLE  = yes
+LTO_ENABLE          = no
+#BOOTLOADER			= qmk-dfu
 
-# If you want to change the display of OLED, you need to change here
-SRC +=  ./lib/glcdfont.c \
-        ./lib/rgb_state_reader.c \
-        ./lib/logo_reader.c \
-        ./lib/keylogger.c \
-    	./lib/mode_icon_reader.c \
-        ./lib/host_led_state_reader.c \
-        ./lib/timelogger.c \
-
-WPM_ENABLE = yes
-VIRTSER_ENABLE = yes
+USER_NAME := jumar

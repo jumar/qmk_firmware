@@ -86,6 +86,7 @@ void render_crkbd_logo(void) {
     oled_write_P(crkbd_logo, false);
 }
 
+
 #define KEYLOG_LEN 5
 char     keylog_str[KEYLOG_LEN] = {};
 uint8_t  keylogs_str_idx        = 0;

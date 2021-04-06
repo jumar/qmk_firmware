@@ -1,12 +1,27 @@
+/*
+Copyright 2019 @foostan
+Copyright 2020 Drashna Jaelre <@drashna>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include QMK_KEYBOARD_H
 #include "jumar.h"
-#include "virtser.h"
-#ifdef RGBLIGHT_ENABLE
-//Following line allows macro to read current RGB settings
-extern rgblight_config_t rgblight_config;
-#endif
 
-extern uint8_t is_master;
+#ifdef VIRTSER_ENABLE
+#include "virtser.h"
+#endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_0_QWERTY] = LAYOUT_wrapper(
@@ -53,391 +68,166 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 };
 
-int RGB_current_mode;
-
-void persistent_default_layer_set(uint16_t default_layer) {
-  eeconfig_update_default_layer(default_layer);
-  default_layer_set(default_layer);
-}
-
-// Setting ADJUST layer RGB back to default
-void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
-  if (IS_LAYER_ON(layer1) && IS_LAYER_ON(layer2)) {
-    layer_on(layer3);
-  } else {
-    layer_off(layer3);
-  }
-}
-
-void matrix_init_user(void) {
-    #ifdef RGBLIGHT_ENABLE
-      RGB_current_mode = rgblight_config.mode;
-    #endif
-    //SSD1306 OLED init, make sure to add #define SSD1306OLED in config.h
-    #ifdef SSD1306OLED
-      iota_gfx_init(!has_usb());   // turns on the display
-    #endif
-    matrix_init_user_RGB_LYR();
-}
-
-//SSD1306 OLED update loop, make sure to add #define SSD1306OLED in config.h
-#ifdef SSD1306OLED
-
-#ifdef VIRTSER_ENABLE
-/* listen on serial for commands. Either a set of lower case letters mapped to colors,
-/  or upper case letters that change RGB mode.
-/  special command C takes 3 numbers as arguments, terminated with a newline or comma or excess digits.
-Command C takes 3-5octets of RGB settings. Numbers can be terminated with a comma or period.
-3 octets = set all LED, 4th argument specfies specfic LED, 4+5 specify start and stop LEDs.
-*/
-#define SOH 0x01
-#define STX 0x02
-#define ETX 0x03
-#define EOT 0x04
-
-#define CMD_UNKNOWN 0
-#define CMD_TIME    1
-#define CMD_NOTIF   2
-#define CMD_MAX     CMD_NOTIF
-
-#define MAX_LINE_LENGTH 24
-
-char ser_text[MAX_LINE_LENGTH] ; // ascii string payload from serial command
-uint8_t ser_text_cur = 0; // cursor in ser_text array
-uint8_t ser_cmd_started = 0 ; // are we in process
-uint8_t ser_cmd_type = CMD_UNKNOWN;
-uint8_t recv_char;
-
-bool is_valid_cmd_code(uint8_t val) {
-    return val > CMD_UNKNOWN && val <= CMD_MAX;
-}
-
-void reset_serial_protocol_parser(void) {
-    ser_cmd_started = 0;
-    ser_cmd_type = CMD_UNKNOWN;
-}
-
-void virtser_recv(uint8_t serIn) {
-    recv_char = serIn;
-
-    // Serial protocol:
-    // key bytes:
-    //  0x01 -> Start of heading
-    //  0x02 -> Start of text
-    //  0x03 -> End of text
-    //  0x04 -> End of Transmission
-    // Heading contains the code for the text payload:
-    // Payload codes:
-    //  0x20 -> Time
-    //  0x21 -> Notification
-    // Example for time (1:32 pm) transmission:
-    // |0x01|0x20|0x02|0x31|0x3A|0x33|0x32|0x03|
-    // Example for Notification ("ABC Meeting in 2 minutes") transmission:
-    // |0x01|0x21|0x41|0x42|0x43|0x20|.........|0x03|
-
-    if (ser_cmd_started == 0 && serIn == SOH) { // Start of header (transmission)
-        ser_cmd_started = 1;
-    } else if (serIn == EOT) { // End of transmission
-        reset_serial_protocol_parser();
-    }
-
-    if (ser_cmd_started) {
-        if (ser_cmd_type == CMD_UNKNOWN) {
-            if (is_valid_cmd_code(serIn)) {
-                // look for payload code in header
-                ser_cmd_type = serIn;
-            } else {
-                // Invalid command code, reset state machine
-                reset_serial_protocol_parser();
-            }
-        } else {
-            switch (ser_cmd_type) {
-                case CMD_TIME:
-
-                    break;
-                default: // todo write error message to screen
-                case CMD_NOTIF:
-                    break;
-            }
-            // parse command content
-        }
-
+#ifdef OLED_DRIVER_ENABLE
+oled_rotation_t oled_init_user(oled_rotation_t rotation) {
+    if (is_keyboard_master()) {
+        return OLED_ROTATION_270;
     } else {
-        // command not started, nothing to do
+        return rotation;
     }
-
-    /*
-#ifdef RGBLIGHT_ENABLE
-    if ((serIn == 10 ) || (serIn ==  13) || ser_got_RGBbytes >=5) { //reached newline or max digits
-
-        if (ser_cmd_started) {
-            ser_cmd_started =0 ; // end loop at newline
-            virtser_send('|');
-
-            if (ser_got_RGBbytes==3) {
-                rgblight_setrgb( rgb_r[0], rgb_r[1], rgb_r[2]);
-            }
-
-            if (ser_got_RGBbytes ==4) {
-                if (( rgb_r[3] >=0)  && (rgb_r[3] <= RGBLED_NUM) ) { // is pos1 plausible
-                    rgblight_setrgb_at ( rgb_r[0], rgb_r[1], rgb_r[2], rgb_r[3]);
-                } else {
-                        rgblight_setrgb( rgb_r[0], rgb_r[1], rgb_r[2]);
-                }
-            }
-
-            if (ser_got_RGBbytes == 5) { // are start and end positions plausible?
-                if ( (rgb_r[4] >0)  && (rgb_r[4] <= RGBLED_NUM) && (rgb_r[4] > rgb_r[3]) &&
-                 (rgb_r[3] >=0)  && (rgb_r[3] <= (RGBLED_NUM -1))  ) {
-                    rgblight_setrgb_range(rgb_r[0], rgb_r[1], rgb_r[2], rgb_r[3], rgb_r[4]);
-               } else {
-                   rgblight_setrgb( rgb_r[0], rgb_r[1], rgb_r[2]);
-               }
-            }
-        } else { // newline outside of command loop, or something that can be ignored.
-          //virtser_send('.');
-        }
-    }
-
-    if (1 == ser_cmd_started) { // collecting bytes.
-        if  (   // it is time to compute a byte
-          ( ( (serIn == ',') || (serIn == '.') ) && (bs > 0) ) || // signal done with the byte.
-            (bs ==2 )){ //or we know this is last.
-
-            if ( (serIn <= '9') && (serIn >='0') ) { //3rd asci digit
-                ser_rgbByte[bs] = serIn;
-                bs++;
-            //  virtser_send(serIn);
-            }
-
-            if (bs>3) {
-                rgb_r[ser_got_RGBbytes]=255;
-                ser_got_RGBbytes ++;
-            }
-            if (bs==3) {
-              rgb_r[ser_got_RGBbytes] = (ser_rgbByte[0] -'0')*100 + (ser_rgbByte[1] -'0')*10 + (ser_rgbByte[2] -'0' );
-              ser_got_RGBbytes ++;
-            }
-            if (bs ==2 ) {
-               rgb_r[ser_got_RGBbytes] = (ser_rgbByte[0] -'0')*10 +  (ser_rgbByte[1] -'0' );
-               ser_got_RGBbytes ++;
-            }
-            if (bs ==1) {
-               rgb_r[ser_got_RGBbytes] = (ser_rgbByte[0] -'0');
-               ser_got_RGBbytes ++;
-            }  // {else wipe & start over}
-
-          bs=0;
-    //  virtser_send(ser_got_RGBbytes+'0');
-
-        } else { // haven't got enough for our byte / no terminal marker
-            if ( (serIn <= '9') && (serIn >='0') ) { //ascii only
-                ser_rgbByte[bs] = serIn;
-                bs++;
-            //    virtser_send(serIn);
-            }
-        }
-    } else { //not in command loop - next is command w/o arguments, or start of one.
-        switch (serIn) {
-            case 'C': // color switch
-                ser_cmd_started=1;
-                ser_got_RGBbytes = bs =0;
-                virtser_send('/');
-                break;
-
-            case 'r': //red
-                rgblight_setrgb(RGB_RED);
-                break;
-
-            case 'g':
-                rgblight_setrgb(RGB_GREEN);
-                break;
-
-            case 'b':  // color switch
-                rgblight_setrgb(RGB_BLUE);
-                break;
-
-            case 'w':  // color switch
-                rgblight_setrgb(RGB_WHITE);
-                break;
-
-            case 'o':  // color black/off
-                rgblight_setrgb(0,0,0);
-                break;
-
-            case 'T':  // toggle
-                rgblight_toggle();
-                break;
-
-            case 'P': // pulse led
-                rgblight_mode_noeeprom(RGBLIGHT_MODE_BREATHING);
-                break;
-            case 'S':  // Static
-                rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-                break;
-
-            case 'U':  // Rainbow
-                rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_MOOD);
-                break;
-
-            default:
-           //     virtser_send(serIn);
-                break;
-
-        }
-    }
-#endif // RGBLIGHT_ENABLE
-*/
 }
 
-#endif // VirtSerial
+void render_crkbd_logo(void) {
+    static const char PROGMEM crkbd_logo[] = {
+        0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f, 0x90, 0x91, 0x92, 0x93, 0x94,
+        0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7, 0xa8, 0xa9, 0xaa, 0xab, 0xac, 0xad, 0xae, 0xaf, 0xb0, 0xb1, 0xb2, 0xb3, 0xb4,
+        0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xcb, 0xcc, 0xcd, 0xce, 0xcf, 0xd0, 0xd1, 0xd2, 0xd3, 0xd4,
+        0};
+    oled_write_P(crkbd_logo, false);
+}
 
 
-// When add source files to SRC in rules.mk, you can use functions.
-const char *read_layer_state(void); // commented as we have our own implementation
-const char *read_logo(void);
-void set_keylog(uint16_t keycode, keyrecord_t *record);
-const char *read_keylog(void);
-const char *read_keylogs(void);
+#define KEYLOG_LEN 5
+char     keylog_str[KEYLOG_LEN] = {};
+uint8_t  keylogs_str_idx        = 0;
+uint16_t log_timer              = 0;
 
-const char *read_mode_icon(bool swap);
-const char *read_host_led_state(void);
-void set_timelog(void);
-const char *read_timelog(void);
+const char code_to_name[60] = {
+    ' ', ' ', ' ', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+    'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+    'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+    'R', 'E', 'B', 'T', '_', '-', '=', '[', ']', '\\',
+    '#', ';', '\'', '`', ',', '.', '/', ' ', ' ', ' '};
 
-char matrix_line_str[24];
+void add_keylog(uint16_t keycode) {
+    if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
+        keycode = keycode & 0xFF;
+    }
 
-void matrix_scan_user(void) {
-   iota_gfx_task();
+    for (uint8_t i = KEYLOG_LEN - 1; i > 0; i--) {
+        keylog_str[i] = keylog_str[i - 1];
+    }
+    if (keycode < 60) {
+        keylog_str[0] = code_to_name[keycode];
+    }
+    keylog_str[KEYLOG_LEN - 1] = 0;
+
+    log_timer = timer_read();
+}
+
+void update_log(void) {
+    if (timer_elapsed(log_timer) > 750) {
+        add_keylog(0);
+    }
+}
+
+void render_keylogger_status(void) {
+    oled_write_P(PSTR("KLogr"), false);
+    oled_write(keylog_str, false);
+}
+
+void render_default_layer_state(void) {
+    oled_write_P(PSTR("Lyout"), false);
+    switch (get_highest_layer(default_layer_state)) {
+        case _0_QWERTY:
+            oled_write_P(PSTR(" QRTY"), false);
+            break;
+        case _1_SYMBOLS_NUMPAD:
+            oled_write_P(PSTR("SymNum"), false);
+            break;
+    }
+}
+
+void render_layer_state(void) {
+    uint8_t layer = biton32(layer_state);
+    oled_write_P(PSTR("Layr:\n"), false);
+    switch (layer)
+    {
+        case _0_QWERTY:
+            oled_write_P(PSTR("QRTY\n"), true);
+        break;
+        case _1_SYMBOLS_NUMPAD:
+            oled_write_P(PSTR("SyNum"), true);
+        break;
+        case _2_MOUSE_MEDIA:
+            oled_write_P(PSTR("Media"), true);
+        break;
+        case _3_NAV:
+            oled_write_P(PSTR("Nav\n"), true);
+        break;
+        case _4_GAM:
+            oled_write_P(PSTR("Game\n"), true);
+        break;
+        case _5_RGB:
+            oled_write_P(PSTR("RGB\n"), true);
+        break;
+        case _6_FN:
+            oled_write_P(PSTR("FN\n"), true);
+        break;
+        default:
+            oled_write_P(PSTR("???\n"), true);
+    }
+    oled_write_P(PSTR("\n"), true);
+}
+
+void render_keylock_status(uint8_t led_usb_state) {
+    oled_write_P(PSTR("\nLock:"), false);
+    oled_write_P(PSTR(" "), false);
+    oled_write_P(PSTR("N"), led_usb_state & (1 << USB_LED_NUM_LOCK));
+    oled_write_P(PSTR("C"), led_usb_state & (1 << USB_LED_CAPS_LOCK));
+    oled_write_ln_P(PSTR("S\n"), led_usb_state & (1 << USB_LED_SCROLL_LOCK));
+}
+
+void render_mod_status(uint8_t modifiers) {
+    oled_write_P(PSTR("\nMods:"), false);
+    oled_write_P(PSTR(" "), false);
+    oled_write_P(PSTR("S"), (modifiers & MOD_MASK_SHIFT));
+    oled_write_P(PSTR("C"), (modifiers & MOD_MASK_CTRL));
+    oled_write_P(PSTR("A"), (modifiers & MOD_MASK_ALT));
+    oled_write_P(PSTR("G\n"), (modifiers & MOD_MASK_GUI));
+}
+
+void render_bootmagic_status(void) {
+    /* Show Ctrl-Gui Swap options */
+    /*static const char PROGMEM logo[][2][3] = {
+        {{0x97, 0x98, 0}, {0xb7, 0xb8, 0}},
+        {{0x95, 0x96, 0}, {0xb5, 0xb6, 0}},
+    };*/
+    oled_write_P(PSTR("BTMGK"), false);
+    /*oled_write_P(PSTR(" "), false);
+    oled_write_P(logo[0][0], !keymap_config.swap_lctl_lgui);
+    oled_write_P(logo[1][0], keymap_config.swap_lctl_lgui);
+    oled_write_P(PSTR(" "), false);
+    oled_write_P(logo[0][1], !keymap_config.swap_lctl_lgui);
+    oled_write_P(logo[1][1], keymap_config.swap_lctl_lgui);*/
+    oled_write_P(PSTR(" NKRO"), keymap_config.nkro);
+}
+
+void render_status_main(void) {
+    /* Show Keyboard Layout  */
+    //render_default_layer_state();
+    render_layer_state();
+    render_keylock_status(host_keyboard_leds());
+    render_mod_status(get_mods());
+    //render_bootmagic_status();
+
+    render_keylogger_status();
+}
+
+void oled_task_user(void) {
+    update_log();
+    if (is_master) {
+        render_status_main();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
+    } else {
+        render_crkbd_logo();
+    }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (record->event.pressed) {
-#ifdef SSD1306OLED
-    set_keylog(keycode, record);
+    if (record->event.pressed) {
+        add_keylog(keycode);
+    }
+    return true;
+}
 #endif
-    set_timelog();
-  }
-  process_record_user_RGB(keycode, record);
-  return true;
-}
-
-const char *read_layer_state(void) {
-  uint8_t layer = biton32(layer_state);
-
-  strcpy(matrix_line_str, "Layer: ");
-
-  switch (layer)
-  {
-    case _0_QWERTY:
-      strcat(matrix_line_str, "QWERTY");
-      break;
-    case _1_SYMBOLS_NUMPAD:
-      strcat(matrix_line_str, "Symbols/Num");
-      break;
-    case _2_MOUSE_MEDIA:
-      strcat(matrix_line_str, "Mouse/Media");
-      break;
-    case _3_NAV:
-      strcat(matrix_line_str, "Navigation");
-      break;
-    case _4_GAM:
-      strcat(matrix_line_str, "Gaming");
-      break;
-    case _5_RGB:
-      strcat(matrix_line_str, "RGB");
-      break;
-    case _6_FN:
-      strcat(matrix_line_str, "FN/Nav");
-      break;
-    default:
-      sprintf(matrix_line_str + strlen(matrix_line_str), "Unknown (%d)", layer);
-  }
-
-  return matrix_line_str;
-}
-const char *read_usb_state(void) {
-
-  strcpy(matrix_line_str, "USB  : ");
-
-  switch (USB_DeviceState) {
-    case DEVICE_STATE_Unattached:
-      strcat(matrix_line_str, "Unattached");
-      break;
-    case DEVICE_STATE_Suspended:
-      strcat(matrix_line_str, "Suspended");
-      break;
-    case DEVICE_STATE_Configured:
-      strcat(matrix_line_str, "Connected");
-      break;
-    case DEVICE_STATE_Powered:
-      strcat(matrix_line_str, "Powered");
-      break;
-    case DEVICE_STATE_Default:
-      strcat(matrix_line_str, "Default");
-      break;
-    case DEVICE_STATE_Addressed:
-      strcat(matrix_line_str, "Addressed");
-      break;
-    default:
-      strcat(matrix_line_str, "Invalid");
-  }
-
-  return matrix_line_str;
-}
-
-const char *read_wpm(void) {
-  strcpy(matrix_line_str, "WPM: ");
-  char buff[4];
-  uint8_t wpm = get_current_wpm();
-  if(wpm < 1000) {
-    itoa(wpm, buff, 10);
-  }
-  else {
-    strcpy(buff, "err");
-  }
-  strcat(matrix_line_str, buff);
-  return matrix_line_str;
-}
-
-const char *read_serial(void) {
-  strcpy(matrix_line_str, ser_text);
-  return matrix_line_str;
-}
-void matrix_render_user(struct CharacterMatrix *matrix) {
-  if (is_master) {
-    // If you want to change the display of OLED, you need to change here
-    //matrix_write(matrix, read_logo());
-    matrix_write_ln(matrix, read_serial());
-    //matrix_write_ln(matrix, read_layer_state());
-    //matrix_write_ln(matrix, read_usb_state());
-    //matrix_write_ln(matrix, read_keylog()); // Matrix debugging
-    //matrix_write_ln(matrix, read_keylogs()); // Prints typed chars (does not work with dual function keys
-    //matrix_write_ln(matrix, read_mode_icon(keymap_config.swap_lalt_lgui));
-    //matrix_write_ln(matrix, read_timelog()); // prints last timestamp and elaspsed time
-  } else {
-    matrix_write_ln(matrix, read_host_led_state());
-    matrix_write_ln(matrix, read_layer_state());
-    matrix_write_ln(matrix, read_wpm());
-  }
-}
-
-void matrix_update(struct CharacterMatrix *dest, const struct CharacterMatrix *source) {
-  if (memcmp(dest->display, source->display, sizeof(dest->display))) {
-    memcpy(dest->display, source->display, sizeof(dest->display));
-    dest->dirty = true;
-  }
-}
-
-void iota_gfx_task_user(void) {
-  struct CharacterMatrix matrix;
-  matrix_clear(&matrix);
-  matrix_render_user(&matrix);
-  matrix_update(&display, &matrix);
-}
-
-
-
-
-#endif//SSD1306OLED
-
