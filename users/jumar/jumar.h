@@ -24,6 +24,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_TERM 120
 #define MASTER_LEFT
 
+// Prevent normal rollover on alphas from accidentally triggering mods.
+#define IGNORE_MOD_TAP_INTERRUPT
+// Enable rapid switch from tap to hold, disables double tap hold auto-repeat.
+// #define TAPPING_FORCE_HOLD
+// Apply the modifier on keys that are tapped during a short hold of a modtap
+// #define PERMISSIVE_HOLD
+// releasing a dual function key without pressing another will send the original keycode
+// #define RETRO_TAPPING
+
+
 //Tap Dance Declarations
 enum {
   TAB_ESC = 0,
@@ -58,6 +68,8 @@ enum {
 #define LT1_DEL  LT(1,KC_DEL)
 #define LT6_GRV  LT(6,KC_GRV)
 #define CTL_ENT  LCTL_T(KC_ENT)
+#define LGU_ESC  LGUI_T(KC_ESC)
+#define ALT_BSP  LALT_T(KC_BSPC)
 
 //Tap Dance Definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
@@ -103,10 +115,10 @@ enum layer_names {
 
 // LAYER 0 QWERTY
 #define ROW5_LEFT_BASE KC_ESC     , KC_1      , KC_2      , KC_3      , KC_4       , KC_5
-#define ROW4_LEFT_BASE TD(TAB_ESC), KC_Q      , KC_W      , KC_E      , KC_R       , KC_T
-#define ROW3_LEFT_BASE LSFT_KP    , LT2_A     , LSFT_S    , LT3_D     , LCTL_F     , KC_G
+#define ROW4_LEFT_BASE KC_TAB     , KC_Q      , KC_W      , KC_E      , KC_R       , KC_T
+#define ROW3_LEFT_BASE KC_CAPS    , LT2_A     , LSFT_S    , LT3_D     , LCTL_F     , KC_G
 #define ROW2_LEFT_BASE CTL_ENT    , KC_Z      , KC_X      , KC_C      , KC_V       , KC_B
-#define ROW1_LEFT_BASE                                      KC_LGUI   , KC_LALT    , LCTL_SP
+#define ROW1_LEFT_BASE                                      LGU_ESC   , ALT_BSP    , LCTL_SP
 
 #define ROW5_RIGHT_BASE KC_6      , KC_7      , KC_8   , KC_9   , KC_0   , KC_BSPC
 #define ROW4_RIGHT_BASE KC_Y      , KC_U      , KC_I   , KC_O   , KC_P   , KC_BSPC
@@ -122,10 +134,10 @@ enum layer_names {
 #define ROW1_LEFT_SYMB_NUMPAD                            KC_APP , TG(_4_GAM), _______
 
 #define ROW5_RIGHT_SYMB_NUMPAD KC_F7  , KC_F8  , KC_F9 , KC_F10 , KC_F11 , KC_F12
-#define ROW4_RIGHT_SYMB_NUMPAD KC_UNDS, KC_P7  , KC_P8 , KC_P9  , KC_PPLS, _______
-#define ROW3_RIGHT_SYMB_NUMPAD KC_AT  , KC_P4  , KC_P5 , KC_P6  , KC_PMNS, KC_NLCK
-#define ROW2_RIGHT_SYMB_NUMPAD KC_DLR , KC_P1  , KC_P2 , KC_P3  , KC_PAST, KC_PENT
-#define ROW1_RIGHT_SYMB_NUMPAD _______, _______, KC_P0
+#define ROW4_RIGHT_SYMB_NUMPAD KC_UNDS, KC_7   , KC_8  , KC_9   , KC_PLUS, XXXXXXX
+#define ROW3_RIGHT_SYMB_NUMPAD KC_AT  , KC_4   , KC_5  , KC_6   , KC_MINS, XXXXXXX
+#define ROW2_RIGHT_SYMB_NUMPAD KC_DLR , KC_1   , KC_2  , KC_3   , KC_ASTR, XXXXXXX
+#define ROW1_RIGHT_SYMB_NUMPAD _______, _______, KC_0
 
 // LAYER 2 MOUSE-MEDIA
 #define ROW5_LEFT_MOUSE_MEDIA SIX_TRNS
@@ -150,8 +162,8 @@ enum layer_names {
 #define ROW5_RIGHT_NAV_CPY_PASTA SIX_TRNS
 #define ROW4_RIGHT_NAV_CPY_PASTA KC_PGUP, KC_HOME, KC_UP  , KC_END,  XXXXXXX, KC_PSCR
 #define ROW3_RIGHT_NAV_CPY_PASTA KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_APP , XXXXXXX
-#define ROW2_RIGHT_NAV_CPY_PASTA XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
-#define ROW1_RIGHT_NAV_CPY_PASTA _______, _______, XXXXXXX
+#define ROW2_RIGHT_NAV_CPY_PASTA KC_INS , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+#define ROW1_RIGHT_NAV_CPY_PASTA _______, KC_APP , XXXXXXX
 
 // LAYER 4 GAMING
 #define ROW5_LEFT_GAMING SIX_TRNS
@@ -181,15 +193,15 @@ enum layer_names {
 
 // LAYER 6 FN
 #define ROW5_LEFT_FN SIX_TRNS
-#define ROW4_LEFT_FN KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  , KC_F6
-#define ROW3_LEFT_FN KC_LSFT, XXXXXXX, _______, XXXXXXX, _______, XXXXXXX
-#define ROW2_LEFT_FN KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+#define ROW4_LEFT_FN XXXXXXX, XXXXXXX, KC_F7  , KC_F8  , KC_F9  , KC_F10
+#define ROW3_LEFT_FN XXXXXXX, XXXXXXX, KC_F4  , KC_F5  , KC_F6  , KC_F11
+#define ROW2_LEFT_FN XXXXXXX, XXXXXXX, KC_F1  , KC_F2  , KC_F3  , KC_F12
 #define ROW1_LEFT_FN                            _______, _______, _______
 
 #define ROW5_RIGHT_FN SIX_TRNS
-#define ROW4_RIGHT_FN KC_F7  , KC_F8  , KC_F9  , KC_F10 , KC_F11 , KC_F12
-#define ROW3_RIGHT_FN XXXXXXX, _______, KC_PGUP, KC_HOME, KC_UP  , KC_END
-#define ROW2_RIGHT_FN XXXXXXX, XXXXXXX, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT
+#define ROW4_RIGHT_FN XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+#define ROW3_RIGHT_FN XXXXXXX, _______, XXXXXXX, _______, KC_UP  , XXXXXXX
+#define ROW2_RIGHT_FN XXXXXXX, XXXXXXX, XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT
 #define ROW1_RIGHT_FN _______, _______, _______
 
 #ifdef RGBLIGHT_ENABLE
