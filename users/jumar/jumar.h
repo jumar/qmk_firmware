@@ -164,7 +164,7 @@ enum layer_names {
 #define ROW5_RIGHT_SYMB_NUMPAD                                                      KC_F7  , KC_F8  , KC_F9 , KC_F10 , KC_F11 , KC_F12
 #define ROW4_RIGHT_SYMB_NUMPAD                                                      KC_UNDS, KC_7   , KC_8  , KC_9   , KC_PLUS, XXXXXXX
 #define ROW3_RIGHT_SYMB_NUMPAD                                                      KC_AT  , KC_4   , KC_5  , KC_6   , KC_MINS, XXXXXXX
-#define ROW2_RIGHT_SYMB_NUMPAD                                                      KC_DLR , KC_1   , KC_2  , KC_3   , KC_ASTR, XXXXXXX
+#define ROW2_RIGHT_SYMB_NUMPAD                                                      KC_DLR , KC_1   , KC_2  , KC_3   , KC_ASTR, KC_NUM
 #define ROW1_RIGHT_SYMB_NUMPAD                                                      _______, _______, KC_0
 
 // LAYER 2 MOUSE-MEDIA

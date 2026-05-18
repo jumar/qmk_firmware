@@ -1,4 +1,4 @@
-//#define KEYBOARD_keebio_quefrency_rev2
+#define KEYBOARD_keebio_quefrency_rev2
 #include QMK_KEYBOARD_H
 #include "jumar.h"
 
@@ -13,7 +13,7 @@ extern keymap_config_t keymap_config;
    * ├─────┼─────┤├─────────┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┐  └──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴───────┬─────┤├─────┤
    * │ F7  │ F8  ││LSHFT       │  Z  │  X  │  C  │  V  │  B  │     │  N  │  M  │  ,  │  .  │  /  │RSHFT     │ UP  ││PGDWN│
    * ├─────┼─────┤├──────┬─────┴─┬───┴──┬──┴───┬──┴────┴─────┤     ├─────┴─────┴────┬┴────┬┴────┬┴────┬─────┼─────┤├─────┤
-   * │ F9  │F10  ││LCTRL │L_ALT  │L_GUI │FN    │SPC          │     │ENTER           │DEL  │APP  │R_CTR│LEFT │DOWN ││RIGHT│
+   * │ F9  │F10  ││LCTRL │ L_GUI │L_ALT │FN    │SPC          │     │ENTER           │DEL  │APP  │R_CTR│LEFT │DOWN ││RIGHT│
    * └─────┴─────┘└──────┴───────┴──────┴──────┴─────────────┘     └────────────────┴─────┴─────┴─────┴─────┴─────┘└─────┘
    */
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -22,12 +22,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_F3,   KC_F4,   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC,          KC_BSLS, KC_END, \
     KC_F5,   KC_F6,   KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_ENT,                    KC_PGUP, \
     KC_F7,   KC_F8,   KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,                   KC_UP,   KC_PGDN, \
-    KC_F9,   KC_F10,  KC_LCTL, KC_LALT, KC_LGUI, MO(_6_FN),KC_SPC, KC_ENT,  XXXXXXX, KC_DEL,  KC_APP,  KC_RCTL,                            KC_LEFT, KC_DOWN, KC_RGHT
+    KC_F9,   KC_F10,  KC_LCTL, KC_LGUI, KC_LALT, MO(_6_FN),KC_SPC, KC_ENT,  XXXXXXX, KC_DEL,  KC_APP,  KC_RCTL,                            KC_LEFT, KC_DOWN, KC_RGHT
   ),
 
   [_6_FN] = LAYOUT_65_with_macro(
-    _______, _______, KC_GESC, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_DEL,  KC_BSPC, RESET, \
-    _______, _______, RGB_TOG, RGB_MOD, RGB_HUI, RGB_SAI, RGB_VAI, _______, _______, _______, _______, _______, _______, _______, _______, _______, EEP_RST, \
+    QK_BOOT, QK_MAKE, KC_ESC, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_DEL,  KC_BSPC, QK_RBT, \
+    _______, _______, RGB_TOG, RGB_MOD, RGB_HUI, RGB_SAI, RGB_VAI, _______, _______, _______, _______, _______, _______, _______, _______, _______, EE_CLR, \
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
     _______, _______, _______, RGB_RMOD,RGB_HUD, RGB_SAD, RGB_VAD, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
     _______, _______, KC_TILD, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______
@@ -35,14 +35,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 void encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == 1) { // I only have this one
+    if (index == 1) { 
         if (clockwise) {
             tap_code(KC_PGDN);
         } else {
             tap_code(KC_PGUP);
         }
     }
-    else if (index == 0) {
+    else if (index == 0) { // I only have this one
         if (clockwise) {
             tap_code(KC_VOLU);
         } else {

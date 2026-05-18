@@ -18,4 +18,3 @@ See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_to
 Enter the bootloader in 3 ways:
 
 * **Physical reset button**: Short the VCC and RST pin on the Promicro
-
