@@ -5,32 +5,61 @@
     // Configure glob patterns for excluding files and folders.
     "files.exclude": {
         "**/.build": true,
-        "**/*.hex": true
+        "**/*.hex": true,
+        "**/*.bin": true,
+        "**/*.uf2": true
     },
     "files.associations": {
-<<<<<<< HEAD
+        // QMK Filetypes
+        "keyboard.json": "jsonc",
+        "info.json": "jsonc",
+        "keymap.json": "jsonc",
+        "qmk.json": "jsonc",
+        "qmk_module.json": "jsonc",
+        // Standard filetypes
         "*.h": "c",
         "*.c": "c",
+        "*.inc": "c",
         "*.cpp": "cpp",
         "*.hpp": "cpp",
-        "xstddef": "c"
+        "xstddef": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "ranges": "c"
     },
-    "terminal.integrated.shell.windows": "C:\\Tools\\msys2\\usr\\bin\\bash.exe",
-        "terminal.integrated.env.windows":
-        {
-            "MSYSTEM": "MINGW64",
-            //"MSYS2_PATH_TYPE": "inherit",
-            "MSVSCODE": "1"
-        },
-=======
-      "*.h": "c",
-      "*.c": "c",
-      "*.cpp": "cpp",
-      "*.hpp": "cpp",
-      "xstddef": "c",
-      "type_traits": "c",
-      "utility": "c"
->>>>>>> upstream/master
+    "[markdown]": {
+        "editor.trimAutoWhitespace": false,
+        "files.trimTrailingWhitespace": false
+    },
+<<<<<<< HEAD
+    "git.ignoreLimitWarning": true
+    "python.formatting.provider": "yapf"
     }
-
+    "clangd.arguments": [
+        "--header-insertion=never"
+=======
+    "python.formatting.provider": "yapf",
+    "[json]": {
+        "editor.formatOnSave": false
+    },
+    "clangd.arguments": ["--header-insertion=never"],
+    "json.schemas": [
+        {
+            "fileMatch": ["qmk.json"],
+            "url": "./data/schemas/user_repo_v1_1.jsonschema"
+        },
+        {
+            "fileMatch": ["qmk_module.json"],
+            "url": "./data/schemas/community_module.jsonschema"
+        },
+        {
+            "fileMatch": ["keyboard.json", "info.json"],
+            "url": "./data/schemas/keyboard.jsonschema"
+        },
+        {
+            "fileMatch": ["keymap.json"],
+            "url": "./data/schemas/keymap.jsonschema"
+        }
+>>>>>>> upstream/master
+    ]
 }
